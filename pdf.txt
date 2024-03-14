@@ -1,0 +1,72 @@
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+
+import java.io.FileNotFoundException;
+
+public class PDFCreator {
+
+    public static void main(String[] args) {
+        // Path where you want to save the PDF file
+        String pdfFilePath = "example.pdf";
+
+        // String values that you want to include in the PDF
+        String value1 = "String 1";
+        String value2 = "String 2";
+        String value3 = "String 3";
+        String value4 = "String 4";
+        String value5 = "String 5";
+
+        // Path to the image file
+        String imagePath = "image.jpg"; // Replace with your image file path
+
+        try {
+            // Create a PdfWriter object
+            PdfWriter writer = new PdfWriter(pdfFilePath);
+
+            // Create a PdfDocument object
+            PdfDocument pdfDocument = new PdfDocument(writer);
+
+            // Create a Document object
+            Document document = new Document(pdfDocument);
+
+            // Add content to the document at different locations
+            addContent(document, value1, 100, 700);
+            addContent(document, value2, 100, 650);
+            addContent(document, value3, 100, 600);
+            addContent(document, value4, 100, 550);
+            addContent(document, value5, 100, 500);
+
+            // Add image to the document
+            addImage(document, imagePath, 100, 450); // Adjust coordinates as needed
+
+            // Close the document
+            document.close();
+
+            System.out.println("PDF created successfully!");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Helper method to add content to the document at specified coordinates
+    private static void addContent(Document document, String content, float x, float y) {
+        Paragraph paragraph = new Paragraph(content);
+        paragraph.setFixedPosition(x, y, 200); // 200 is width of the text, adjust as needed
+        document.add(paragraph);
+    }
+
+    // Helper method to add an image to the document at specified coordinates
+    private static void addImage(Document document, String imagePath, float x, float y) {
+        try {
+            Image image = new Image(ImageDataFactory.create(imagePath));
+            image.setFixedPosition(x, y);
+            document.add(image);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
